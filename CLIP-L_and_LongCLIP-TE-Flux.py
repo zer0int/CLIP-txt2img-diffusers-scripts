@@ -88,15 +88,16 @@ non_padding_count = torch.sum(token_ids != clip_processor.tokenizer.pad_token_id
 print(f"Number of non-padding (actual prompt content) tokens: {non_padding_count}\n------\n")
 
 
-# Pipeline run:
 seed = 425533035839096
+generator = torch.manual_seed(seed)
+# Pipeline run:
 out = pipe(
     prompt=prompt,
     guidance_scale=3.5,
     height=1024,
     width=1024,
     num_inference_steps=20,
-    generator=torch.Generator(device).manual_seed(seed)
+    generator=generator
 ).images[0]
 
 out.save(f"image_{clipmodel}_prompt-{selectedprompt}.png")
